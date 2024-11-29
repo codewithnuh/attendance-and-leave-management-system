@@ -1,7 +1,5 @@
 "use client";
-
 import { useState } from "react";
-import { Header } from "@/components/header";
 import {
   Card,
   CardContent,
@@ -63,7 +61,6 @@ export default function GradingSystem() {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header userRole="admin" />
       <main className="container mx-auto px-4 py-8">
         <Card>
           <CardHeader>

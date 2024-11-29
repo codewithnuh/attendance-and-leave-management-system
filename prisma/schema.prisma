@@ -1,0 +1,53 @@
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+// Prisma schema for User and Attendance models in production
+
+model User {
+    id             Int          @id @default(autoincrement()) // Auto-incrementing primary key
+    name           String
+    email          String       @unique @db.VarChar(255) // Unique email with varchar limit for performance
+    password       String       @db.VarChar(255) // Store password hashes, not plain text
+    profilePicture String? // Optional field for the user's profile picture URL
+    role           Role         @default(USER) // Default user role (USER or ADMIN)
+    createdAt      DateTime     @default(now()) // Created timestamp
+    updatedAt      DateTime     @updatedAt // Automatically updates timestamp on changes
+    attendance     Attendance[] @relation("UserAttendance") // One-to-many relationship with Attendance
+
+    // Indexing email for fast lookup and ensuring no duplicates
+    @@index([email])
+}
+
+model Attendance {
+    id          Int        @id @default(autoincrement()) // Auto-incrementing primary key
+    userId      Int // Foreign key to User
+    date        DateTime   @default(now()) // Attendance date, defaults to current date
+    status      StatusEnum @default(Absent) // Attendance status (Present, Absent, or Leave)
+    leaveReason String? // Reason for leave (nullable)
+    createdAt   DateTime   @default(now()) // Created timestamp for the attendance record
+
+    user User @relation("UserAttendance", fields: [userId], references: [id]) // User relation
+
+    // Composite Index: (userId, date) for performance when querying attendance by user and date
+    @@index([userId, date], name: "attendance_user_date_idx")
+}
+
+enum StatusEnum {
+    Present
+    Absent
+    Leave
+}
+
+enum Role {
+    USER
+    ADMIN
+}
+
+// Additional database configuration
+// Default indexes and constraints can also be set at the database level

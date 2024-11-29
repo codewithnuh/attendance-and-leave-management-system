@@ -1,4 +1,3 @@
-import { Header } from "@/components/header";
 import {
   Card,
   CardContent,
@@ -6,13 +5,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-
 // import { BarChart } from "recharts";
-
 export default function AdminDashboard() {
   return (
     <div className="min-h-screen bg-background">
-      <Header userRole="admin" />
       <main className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <Card>
@@ -51,7 +47,9 @@ export default function AdminDashboard() {
             <CardTitle>Attendance Trends</CardTitle>
             <CardDescription>Weekly attendance statistics</CardDescription>
           </CardHeader>
-          <CardContent className="h-[300px]">{/* <BarChart /> */}</CardContent>
+          <CardContent className="h-[300px]">
+            {/* <BarChart data={[]} /> */}
+          </CardContent>
         </Card>
       </main>
     </div>
