@@ -15,6 +15,12 @@ export const registerSchema = z.object({
   //       }
   //     ),
 });
+// Define the structure of the session payload
+export interface SessionPayload {
+  userId: string; // Unique user identifier
+  [key: string]: any;
+}
+
 export type FormState =
   | {
       errors?: {

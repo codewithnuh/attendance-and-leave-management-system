@@ -1,9 +1,7 @@
-import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import LoginForm from "@/components/LoginForm";
 import Link from "next/link";
 import RegisterForm from "@/components/RegisterForm";
-
 export default function LoginRegisterPage() {
   return (
     <div className="container mx-auto flex items-center justify-center min-h-screen">

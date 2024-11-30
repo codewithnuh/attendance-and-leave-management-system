@@ -1,8 +1,17 @@
-import Link from "next/link";
+"use client";
 import { Button } from "@/components/ui/button";
 import ModeToggle from "@/components/mode-toggle";
-
+import Link from "next/link";
+import { useState, useEffect } from "react";
+import logout from "@/lib/actions/logout.action"; // Assuming logout function clears the session
 export function Header({ userRole }: { userRole: "user" | "admin" }) {
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Tracks if the user is logged in
+
+  useEffect(() => {
+    // Check if user is logged in by checking the session or cookie
+    const sessionToken = document.cookie.includes("authToken"); // Example: Check if "authToken" exists in cookies
+    setIsLoggedIn(sessionToken);
+  }, []);
   return (
     <header className="bg-background border-b">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
@@ -51,7 +60,12 @@ export function Header({ userRole }: { userRole: "user" | "admin" }) {
           </ul>
         </nav>
         <div className="flex items-center space-x-4">
-          <Button variant="ghost">Logout</Button>
+          <form action={logout}>
+            <Button type="submit" variant="ghost">
+              Logout
+            </Button>
+          </form>
+          )
           <ModeToggle />
         </div>
       </div>
