@@ -1,15 +1,16 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import LoginForm from "@/components/LoginForm";
-import Link from "next/link";
 import RegisterForm from "@/components/RegisterForm";
 export default function LoginRegisterPage() {
   return (
-    <div className="container mx-auto flex items-center justify-center min-h-screen">
+    <div className="container mx-auto flex items-center flex-col justify-center min-h-screen">
+      <p className="font-bold text-foreground text-3xl mb-6">ALMS</p>
       <div className="flex items-end justify-center space-x-4">
         <Tabs defaultValue="login" className="w-[400px]">
-          <TabsList className="grid w-full grid-cols-2">
+          <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="login">Login</TabsTrigger>
             <TabsTrigger value="register">Register</TabsTrigger>
+            <TabsTrigger value="admin">Admin</TabsTrigger>
           </TabsList>
 
           <TabsContent value="login">
@@ -19,8 +20,10 @@ export default function LoginRegisterPage() {
           <TabsContent value="register">
             <RegisterForm />
           </TabsContent>
+          <TabsContent value="admin">
+            <LoginForm />
+          </TabsContent>
         </Tabs>
-        <Link href="/admin">Admin</Link>
       </div>
     </div>
   );

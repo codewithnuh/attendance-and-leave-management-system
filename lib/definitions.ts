@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { prisma } from "./prisma";
 
 export const registerSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -18,7 +19,7 @@ export const registerSchema = z.object({
 // Define the structure of the session payload
 export interface SessionPayload {
   userId: string; // Unique user identifier
-  [key: string]: any;
+  [key: string]: string;
 }
 
 export type FormState =
@@ -31,3 +32,11 @@ export type FormState =
       message?: string;
     }
   | undefined;
+
+export const fetchAttendanceStatus = async (userId: string) => {
+  return await prisma.attendance.findFirst({
+    where: {
+      userId,
+    },
+  });
+};

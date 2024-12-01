@@ -1,12 +1,10 @@
 "use server";
 
-import { NextApiRequest, NextApiResponse } from "next";
+// import { NextApiRequest, NextApiResponse } from "next";
 import { deleteSession } from "@/lib/session";
+import { redirect } from "next/navigation";
 
-export default async function logout(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+export default async function logout() {
   await deleteSession();
-  return res.redirect("/login");
+  redirect("/");
 }

@@ -1,8 +1,24 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
-const inter = Inter({ subsets: ["latin"] });
+import localFont from "next/font/local";
+import clsx from "clsx";
+const poppins = localFont({
+  src: "./fonts/Poppins-Regular.woff",
+  display: "swap",
+});
+const poppinsBold = localFont({
+  src: "./fonts/Poppins-Bold.woff",
+  display: "swap",
+});
+const poppinsMedium = localFont({
+  src: "./fonts/Poppins-Medium.woff",
+  display: "swap",
+});
+const poppinsSemiBold = localFont({
+  src: "./fonts/Poppins-SemiBold.woff",
+  display: "swap",
+});
 export const metadata: Metadata = {
   title: "Attendance and Leave Management System",
   description: "Manage attendance and leave requests efficiently",
@@ -14,7 +30,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={inter.className}>
+      <body
+        className={clsx(
+          poppins.className,
+          poppinsBold.className,
+          poppinsMedium.className,
+          poppinsSemiBold.className
+        )}
+      >
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"

@@ -21,6 +21,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { redirect } from "next/navigation";
 
 /**
  * Interface representing the form data structure
@@ -127,6 +128,7 @@ export default function LoginForm() {
           password: formData.get("password") as string,
         };
         formAction(data);
+        redirect("/dashboard");
       }}
       className="space-y-6 max-w-lg mx-auto"
     >
@@ -150,11 +152,9 @@ export default function LoginForm() {
               aria-invalid={state.errors?.email ? "true" : "false"}
             />
             {state.errors?.email && (
-              <div className="text-red-500 text-sm mt-1">
-                {state.errors.email.map((error, index) => (
-                  <p key={index}>{error}</p>
-                ))}
-              </div>
+              <p className="text-red-500 text-sm mt-1" role="alert">
+                {state.errors.email[0]}
+              </p>
             )}
           </div>
 

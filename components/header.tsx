@@ -65,7 +65,6 @@ export function Header({ userRole }: { userRole: "user" | "admin" }) {
               Logout
             </Button>
           </form>
-          )
           <ModeToggle />
         </div>
       </div>

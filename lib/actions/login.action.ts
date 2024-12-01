@@ -3,7 +3,6 @@ import bcrypt from "bcrypt";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 import { createSession } from "../session";
-import { redirect } from "next/navigation";
 /**
  * Interface representing the result of a login attempt
  * @property success - Whether the login was successful
@@ -123,7 +122,7 @@ export async function loginUser(formData: FormData): Promise<LoginResult> {
     }
 
     await createSession(user.id);
-    redirect("/dashboard");
+
     return {
       success: true,
       message: "Login successful!", // Success message to be sent back

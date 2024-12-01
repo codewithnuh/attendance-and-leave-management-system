@@ -62,3 +62,20 @@ export async function deleteSession() {
   const cookieStore = await cookies();
   cookieStore.delete("session");
 }
+export async function getUserIdFromSession() {
+  const cookieStore = cookies();
+  const session = (await cookieStore).get("session")?.value;
+
+  if (!session) {
+    throw new Error("Session cookie not found");
+  }
+
+  const payload = await decrypt(session);
+
+  if (!payload || typeof payload.userId !== "string") {
+    throw new Error("Invalid or expired session");
+  }
+
+  console.log("Decrypted User ID:", payload.userId); // Debugging
+  return payload.userId;
+}
