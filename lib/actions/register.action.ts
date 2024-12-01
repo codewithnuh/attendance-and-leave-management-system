@@ -14,6 +14,7 @@
 import { z } from "zod";
 import bcrypt from "bcrypt";
 import { prisma } from "@/lib/prisma";
+import { createSession } from "../session";
 
 /**
  * Validation schema for user registration
@@ -106,14 +107,15 @@ export async function registerUser(formData: FormData): Promise<ActionResult> {
       10
     );
 
-    await prisma.user.create({
+    const user = await prisma.user.create({
       data: {
         name: validationResult.data.name,
         email: validationResult.data.email,
         password: hashedPassword,
       },
     });
-
+    // Create session for the new user
+    await createSession(user.id);
     return {
       success: true,
       message: "User registered successfully!",
