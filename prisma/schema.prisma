@@ -27,13 +27,14 @@ model User {
 // Attendance model to track attendance for users
 model Attendance {
     id        Int        @id @default(autoincrement())
-    userId    String // References the User's id field
-    date      DateTime // Specific date for attendance
-    status    StatusEnum @default(Absent) // Enum: Present, Absent, or Leave
+    userId    String
+    date      DateTime
+    status    StatusEnum @default(Absent)
     createdAt DateTime   @default(now())
 
-    // Relationship with User
     user User @relation("UserAttendance", fields: [userId], references: [id])
+
+    @@unique([userId, date]) // Composite unique constraint
 }
 
 // Leave model to track leave requests

@@ -1,6 +1,5 @@
 "use client";
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -20,22 +19,46 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-const LeaveSubmissionCard = () => {
+
+// API call for marking leave
+import { markLeave } from "@/lib/actions/mark-leave.action";
+
+const LeaveSubmissionCard = ({ userId }) => {
   const [startDate, setStartDate] = useState<Date>();
   const [endDate, setEndDate] = useState<Date>();
   const [reason, setReason] = useState<string>("");
   const [submit, setSubmit] = useState<boolean>(false);
-  const handleSubmit = (event: React.FormEvent) => {
-    setSubmit(true);
+  const [statusMessage, setStatusMessage] = useState<string>("");
+
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    console.log({
+    setSubmit(true);
+    setStatusMessage("Submitting your leave request...");
+    console.log("Payload:", {
+      userId, // Replace with the dynamic user ID
       startDate,
       endDate,
       reason,
     });
-    // Here you would typically make an API call to submit the leave request
-    console.log("Leave request submitted");
+    try {
+      const response = await markLeave({
+        userId, // replace with the actual userId
+        startDate: startDate!,
+        endDate: endDate!,
+        reason,
+      });
+
+      if (response.success) {
+        setStatusMessage("Leave request submitted successfully!");
+      } else {
+        setStatusMessage(response.message);
+      }
+    } catch (error) {
+      console.log(error);
+      setStatusMessage("Error occurred while submitting leave request.");
+    }
   };
+
   return (
     <Card className="max-w-md mx-auto">
       {submit == false ? (
@@ -128,10 +151,7 @@ const LeaveSubmissionCard = () => {
               Status
             </h3>
             <p className="text-3xl font-bold text-orange-500 dark:text-orange-400">
-              Pending
-            </p>
-            <p className="text-sm text-muted-foreground max-w-[200px]">
-              Your leave request is currently under review
+              {statusMessage}
             </p>
           </div>
           <div className="w-full max-w-[200px] h-2 bg-orange-200 rounded-full overflow-hidden">
@@ -145,4 +165,5 @@ const LeaveSubmissionCard = () => {
     </Card>
   );
 };
+
 export default LeaveSubmissionCard;

@@ -1,7 +1,7 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import { StatusEnum } from "@prisma/client";
+import { LeaveStatusEnum, StatusEnum } from "@prisma/client";
 
 interface LeaveRequest {
   userId: string;
@@ -22,8 +22,20 @@ export async function markLeave({
   endDate,
   reason,
 }: LeaveRequest): Promise<LeaveResult> {
+  if (!userId || !startDate || !endDate || !reason) {
+    return {
+      success: false,
+      message: "Invalid data provided. Ensure all fields are filled.",
+    };
+  }
   try {
-    // Validate startDate and endDate
+    if (!(startDate instanceof Date) || !(endDate instanceof Date)) {
+      return {
+        success: false,
+        message: "Invalid date values provided.",
+      };
+    }
+
     if (startDate > endDate) {
       return {
         success: false,
@@ -31,15 +43,19 @@ export async function markLeave({
       };
     }
 
-    // Check if user has marked attendance for any of the requested dates
-    const overlappingAttendance = await prisma.attendance.findFirst({
+    if (!reason || reason.trim() === "") {
+      return {
+        success: false,
+        message: "Leave reason cannot be empty.",
+      };
+    }
+
+    const overlappingAttendance = await prisma.leave.findFirst({
       where: {
         userId,
-        date: {
-          gte: startDate,
-          lte: endDate,
-        },
-        status: "Present", // Conflicting status
+        startDate: { gte: startDate },
+        endDate: { lte: endDate },
+        status: "Approved",
       },
     });
 
@@ -51,7 +67,6 @@ export async function markLeave({
       };
     }
 
-    // Create leave entries for each day in the requested range
     const leaveDays: Date[] = [];
     const currentDate = new Date(startDate);
 
@@ -62,12 +77,13 @@ export async function markLeave({
 
     const leaveRecords = leaveDays.map((date) => ({
       userId,
-      date,
-      status: StatusEnum.Leave,
+      startDate: date,
+      endDate: date, // Use the date as both startDate and endDate for each record
+      status: LeaveStatusEnum.Pending,
       leaveReason: reason,
     }));
 
-    await prisma.attendance.createMany({
+    await prisma.leave.createMany({
       data: leaveRecords,
     });
 
