@@ -3,6 +3,10 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import localFont from "next/font/local";
 import clsx from "clsx";
+import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
+import { extractRouterConfig } from "uploadthing/server";
+import { Toaster } from "@/components/ui/toaster";
+import { ourFileRouter } from "@/app/api/uploadthing/core";
 const poppins = localFont({
   src: "./fonts/Poppins-Regular.woff",
   display: "swap",
@@ -44,7 +48,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
           {children}
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>

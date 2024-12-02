@@ -9,42 +9,22 @@ import {
 } from "@/components/ui/sheet";
 import ModeToggle from "@/components/mode-toggle";
 import Link from "next/link";
-import { useState, useEffect } from "react";
 import { Menu } from "lucide-react";
 import logout from "@/lib/actions/logout.action";
+import { USER_NAV_ITEMS } from "@/constants";
 
 export function Header({ userRole }: { userRole: "user" | "admin" }) {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  useEffect(() => {
-    const sessionToken = document.cookie.includes("authToken");
-    setIsLoggedIn(sessionToken);
-  }, []);
-
   const NavItems = () => (
-    <ul className="flex flex-col space-y-4 md:flex-row md:space-y-0 md:space-x-4">
+    <ul className="flex flex-col space-y-4 md:flex-row md:space-y-0 md:space-x-4 mt-6 sm:mt-0">
       {userRole === "user" ? (
         <>
-          <li>
-            <Link href="/dashboard" className="hover:text-primary">
-              Dashboard
-            </Link>
-          </li>
-          <li>
-            <Link href="/mark-attendance" className="hover:text-primary">
-              Mark Attendance
-            </Link>
-          </li>
-          <li>
-            <Link href="/mark-leave" className="hover:text-primary">
-              Mark Leave
-            </Link>
-          </li>
-          <li>
-            <Link href="/view-attendance" className="hover:text-primary">
-              View Attendance
-            </Link>
-          </li>
+          {USER_NAV_ITEMS.map((item, index) => (
+            <li key={index}>
+              <Link href={item.link} className="hover:text-primary ">
+                {item.label}
+              </Link>
+            </li>
+          ))}
         </>
       ) : (
         <>
@@ -89,7 +69,7 @@ export function Header({ userRole }: { userRole: "user" | "admin" }) {
         <Link href="/" className="text-2xl font-bold">
           ALMS
         </Link>
-        <nav className="hidden md:block">
+        <nav className="hidden md:block ">
           <NavItems />
         </nav>
         <div className="flex items-center space-x-4">
@@ -97,7 +77,7 @@ export function Header({ userRole }: { userRole: "user" | "admin" }) {
             <Button
               type="submit"
               variant="ghost"
-              className="hidden md:inline-flex"
+              className="hidden md:inline-flex bg-primary"
             >
               Logout
             </Button>
@@ -111,14 +91,15 @@ export function Header({ userRole }: { userRole: "user" | "admin" }) {
               </Button>
             </SheetTrigger>
             <SheetContent side="right">
-              <SheetTitle>Menu</SheetTitle>
+              <SheetTitle className="sr-only">Menu</SheetTitle>
+
               <nav className="flex flex-col space-y-4">
                 <NavItems />
                 <form action={logout}>
                   <Button
                     type="submit"
                     variant="ghost"
-                    className="w-full justify-start"
+                    className="w-full justify-start bg-primary"
                   >
                     Logout
                   </Button>

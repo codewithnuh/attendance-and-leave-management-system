@@ -53,7 +53,7 @@ const AttendanceCard = ({
               onClick={handleMarkAttendance}
               size="lg"
               className="w-full"
-              //   disabled={isPending || !userId}
+              disabled={isPending || !userId}
             >
               {isPending ? "Marking..." : "Mark Attendance"}
             </Button>

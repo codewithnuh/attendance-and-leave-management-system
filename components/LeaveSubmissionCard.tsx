@@ -23,10 +23,16 @@ import {
 const LeaveSubmissionCard = () => {
   const [startDate, setStartDate] = useState<Date>();
   const [endDate, setEndDate] = useState<Date>();
+  const [reason, setReason] = useState<string>("");
   const [submit, setSubmit] = useState<boolean>(false);
   const handleSubmit = (event: React.FormEvent) => {
     setSubmit(true);
     event.preventDefault();
+    console.log({
+      startDate,
+      endDate,
+      reason,
+    });
     // Here you would typically make an API call to submit the leave request
     console.log("Leave request submitted");
   };
@@ -102,6 +108,7 @@ const LeaveSubmissionCard = () => {
                 <Label htmlFor="reason">Reason for Leave</Label>
                 <Textarea
                   id="reason"
+                  onChange={(e) => setReason(e.target.value)}
                   placeholder="Enter your reason for leave"
                 />
               </div>

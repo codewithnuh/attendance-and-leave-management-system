@@ -1,3 +1,9 @@
+import { AttendanceHistorySkeleton } from "@/components/attendance-history-skeleton";
+import AttendanceHistoryCard from "@/components/AttendanceHistoryCard";
+import { fetchAttendanceHistory } from "@/lib/definitions";
+import { getUserIdFromSession } from "@/lib/session";
+import { Suspense } from "react";
+import { Table, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import {
   Card,
   CardContent,
@@ -5,17 +11,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { fetchAttendanceHistory } from "@/lib/definitions";
-import { getUserIdFromSession } from "@/lib/session";
-
 export default async function ViewAttendance() {
   const userId = await getUserIdFromSession();
   const attendanceHistory = await fetchAttendanceHistory(userId);
@@ -35,22 +30,15 @@ export default async function ViewAttendance() {
                   <TableHead>Status</TableHead>
                 </TableRow>
               </TableHeader>
-              <TableBody>
-                {attendanceHistory.length > 0 ? (
-                  attendanceHistory.map((record, index) => (
-                    <TableRow key={index}>
-                      <TableCell>{record.date}</TableCell>
-                      <TableCell>{record.status}</TableCell>
-                    </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell colSpan={2} className="text-center">
-                      No attendance records found.
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
+              <Suspense
+                fallback={
+                  <AttendanceHistorySkeleton
+                    totalAttendance={attendanceHistory.length}
+                  />
+                }
+              >
+                <AttendanceHistoryCard />
+              </Suspense>
             </Table>
           </CardContent>
         </Card>

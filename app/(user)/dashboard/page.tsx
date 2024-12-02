@@ -7,13 +7,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { fetchUserDetails } from "@/lib/definitions";
 import { getUserIdFromSession } from "@/lib/session";
+import ProfileInfo from "@/components/ProfileInfo";
 
 export default async function Dashboard() {
   const userId = await getUserIdFromSession();
   const userDetails = await fetchUserDetails(userId);
+
   return (
     <div className="min-h-screen bg-background">
       <main className="container mx-auto px-4 py-8">
@@ -52,30 +53,7 @@ export default async function Dashboard() {
             </CardContent>
           </Card>
         </div>
-        <Card className="mt-8">
-          <CardHeader>
-            <CardTitle>Profile</CardTitle>
-            <CardDescription>Your personal information</CardDescription>
-          </CardHeader>
-          <CardContent className="flex items-center space-x-4">
-            <Avatar className="h-20 w-20">
-              <AvatarImage
-                src="/placeholder-avatar.jpg"
-                alt="Profile picture"
-              />
-              <AvatarFallback>JD</AvatarFallback>
-            </Avatar>
-            <div>
-              <h3 className="text-lg font-semibold">{userDetails?.name}</h3>
-              <p className="text-sm text-muted-foreground">
-                {userDetails?.email}
-              </p>
-              <Button variant="outline" className="mt-2">
-                Edit Profile
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
+        <ProfileInfo userId={userId} userDetails={userDetails} />
       </main>
     </div>
   );
