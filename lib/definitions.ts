@@ -75,3 +75,22 @@ export const fetchAttendanceHistory = async (userId: string) => {
     status: record.status,
   }));
 };
+export const fetchLeaveStatus = async (userId: string) => {
+  const attendanceStatus = await prisma.leave.findFirst({
+    where: {
+      userId,
+    },
+  });
+  return attendanceStatus;
+};
+export const fetchPendingLeaves = async () => {
+  const pendingLeaves = await prisma.leave.findMany({
+    where: {
+      status: "Pending",
+    },
+    include: {
+      user: true,
+    },
+  });
+  return pendingLeaves;
+};

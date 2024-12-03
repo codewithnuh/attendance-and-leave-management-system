@@ -23,7 +23,13 @@ import {
 // API call for marking leave
 import { markLeave } from "@/lib/actions/mark-leave.action";
 
-const LeaveSubmissionCard = ({ userId }) => {
+const LeaveSubmissionCard = ({
+  userId,
+  leaveStatus,
+}: {
+  userId: string;
+  leaveStatus?: string;
+}) => {
   const [startDate, setStartDate] = useState<Date>();
   const [endDate, setEndDate] = useState<Date>();
   const [reason, setReason] = useState<string>("");
@@ -131,6 +137,7 @@ const LeaveSubmissionCard = ({ userId }) => {
                 <Label htmlFor="reason">Reason for Leave</Label>
                 <Textarea
                   id="reason"
+                  maxLength={50}
                   onChange={(e) => setReason(e.target.value)}
                   placeholder="Enter your reason for leave"
                 />
@@ -150,12 +157,23 @@ const LeaveSubmissionCard = ({ userId }) => {
             <h3 className="text-lg font-semibold text-muted-foreground">
               Status
             </h3>
-            <p className="text-3xl font-bold text-orange-500 dark:text-orange-400">
+            <p className="text-3xl font-bold text-center">{leaveStatus}</p>
+            <p
+              className={`text-3xl font-bold ${
+                leaveStatus == "Pending"
+                  ? "text-orange-500 dark:text-orange-400"
+                  : "text-green-500 dark:text-green-400"
+              }`}
+            >
               {statusMessage}
             </p>
           </div>
           <div className="w-full max-w-[200px] h-2 bg-orange-200 rounded-full overflow-hidden">
-            <div className="w-1/2 h-full bg-orange-500 rounded-full"></div>
+            <div
+              className={`w-1/2 h-full ${
+                leaveStatus == "Pending" ? " bg-orange-500 " : "bg-green-500"
+              }rounded-full`}
+            ></div>
           </div>
           <p className="text-xs text-muted-foreground">
             Estimated response time: 24-48 hours

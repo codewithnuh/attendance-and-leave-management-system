@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "name": "attendance-and-leave-management-system",
   "version": "0.1.0",
   "private": true,
@@ -26,6 +27,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
+    "g": "^2.0.1",
     "jose": "^5.9.6",
     "lucide-react": "^0.462.0",
     "next": "15.0.3",
@@ -47,13 +49,14 @@
   "devDependencies": {
     "@hookform/resolvers": "^3.9.1",
     "@types/bcrypt": "^5.0.2",
-    "@types/node": "^20",
+    "@types/node": "^20.17.9",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "eslint": "^8",
     "eslint-config-next": "15.0.3",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5"
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2"
   }
 }

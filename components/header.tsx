@@ -77,7 +77,7 @@ export function Header({ userRole }: { userRole: "user" | "admin" }) {
             <Button
               type="submit"
               variant="ghost"
-              className="hidden md:inline-flex bg-primary"
+              className="hidden md:inline-flex bg-primary text-white hover:bg-primary/85 hover:text-white"
             >
               Logout
             </Button>
@@ -99,7 +99,7 @@ export function Header({ userRole }: { userRole: "user" | "admin" }) {
                   <Button
                     type="submit"
                     variant="ghost"
-                    className="w-full justify-start bg-primary"
+                    className="w-full justify-start bg-primary text-white dark:text-white"
                   >
                     Logout
                   </Button>

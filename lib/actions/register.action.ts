@@ -68,17 +68,13 @@ interface ActionResult {
  * @returns Promise<ActionResult> - Result of registration attempt
  */
 export async function registerUser(formData: FormData): Promise<ActionResult> {
-  // Extract fields from FormData
   const rawFormData = {
     name: formData.get("name") as string,
     email: formData.get("email") as string,
     password: formData.get("password") as string,
   };
 
-  // Validate input using Zod schema
   const validationResult = registerSchema.safeParse(rawFormData);
-
-  // Handle validation errors
   if (!validationResult.success) {
     return {
       success: false,
@@ -87,7 +83,6 @@ export async function registerUser(formData: FormData): Promise<ActionResult> {
   }
 
   try {
-    // Check if user already exists
     const existingUser = await prisma.user.findUnique({
       where: { email: validationResult.data.email },
     });
@@ -95,13 +90,10 @@ export async function registerUser(formData: FormData): Promise<ActionResult> {
     if (existingUser) {
       return {
         success: false,
-        errors: {
-          email: ["This email is already registered"],
-        },
+        errors: { email: ["This email is already registered"] },
       };
     }
 
-    // Hash password and create the user
     const hashedPassword = await bcrypt.hash(
       validationResult.data.password,
       10
@@ -112,21 +104,17 @@ export async function registerUser(formData: FormData): Promise<ActionResult> {
         name: validationResult.data.name,
         email: validationResult.data.email,
         password: hashedPassword,
+        role: "USER", // Enforce role as "USER"
       },
     });
-    // Create session for the new user
-    await createSession(user.id);
-    return {
-      success: true,
-      message: "User registered successfully!",
-    };
+
+    await createSession(user.id, false);
+    return { success: true, message: "User registered successfully!" };
   } catch (error) {
     console.error("Registration error:", error);
     return {
       success: false,
-      errors: {
-        email: ["Failed to register. Please try again."],
-      },
+      errors: { email: ["Failed to register. Please try again."] },
     };
   }
 }

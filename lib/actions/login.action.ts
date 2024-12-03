@@ -21,9 +21,7 @@ export async function loginUser(formData: FormData): Promise<{
     password: formData.get("password") as string | null,
   };
 
-  // Validate input with Zod
   const validationResult = loginSchema.safeParse(rawFormData);
-
   if (!validationResult.success) {
     return {
       success: false,
@@ -34,36 +32,22 @@ export async function loginUser(formData: FormData): Promise<{
   const { email, password } = validationResult.data;
 
   try {
-    // Fetch user by email
     const user = await prisma.user.findUnique({ where: { email } });
     if (!user) {
-      return {
-        success: false,
-        errors: { email: ["User not found"] },
-      };
+      return { success: false, errors: { email: ["User not found"] } };
     }
 
-    // Validate password
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      return {
-        success: false,
-        errors: { password: ["Invalid password"] },
-      };
+      return { success: false, errors: { password: ["Invalid password"] } };
     }
 
-    // Create session
-    await createSession(user.id);
+    const isAdmin = user.role === "ADMIN"; // Assuming `role` column in database
+    await createSession(user.id, isAdmin);
 
-    return {
-      success: true,
-      message: "Login successful!",
-    };
+    return { success: true, message: "Login successful!" };
   } catch (error) {
     console.error("Login error:", error);
-    return {
-      success: false,
-      errors: { general: ["An unexpected error occurred. Please try again."] },
-    };
+    return { success: false, errors: { general: ["An error occurred"] } };
   }
 }

@@ -25,7 +25,6 @@ interface FormErrors {
   password?: string[];
   general?: string[];
 }
-
 interface ActionResult {
   success: boolean;
   message?: string;
@@ -76,6 +75,7 @@ export default function LoginForm() {
       if (result.success) {
         router.push("/dashboard");
       }
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       setActionResult({
         success: false,

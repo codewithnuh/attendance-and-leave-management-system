@@ -1,7 +1,6 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import { LeaveStatusEnum, StatusEnum } from "@prisma/client";
 
 interface LeaveRequest {
   userId: string;
@@ -28,63 +27,30 @@ export async function markLeave({
       message: "Invalid data provided. Ensure all fields are filled.",
     };
   }
+
+  if (!(startDate instanceof Date) || !(endDate instanceof Date)) {
+    return {
+      success: false,
+      message: "Invalid date values provided.",
+    };
+  }
+
+  if (startDate > endDate) {
+    return {
+      success: false,
+      message: "Start date cannot be after the end date.",
+    };
+  }
+
   try {
-    if (!(startDate instanceof Date) || !(endDate instanceof Date)) {
-      return {
-        success: false,
-        message: "Invalid date values provided.",
-      };
-    }
-
-    if (startDate > endDate) {
-      return {
-        success: false,
-        message: "Start date cannot be after the end date.",
-      };
-    }
-
-    if (!reason || reason.trim() === "") {
-      return {
-        success: false,
-        message: "Leave reason cannot be empty.",
-      };
-    }
-
-    const overlappingAttendance = await prisma.leave.findFirst({
-      where: {
+    await prisma.leave.create({
+      data: {
         userId,
-        startDate: { gte: startDate },
-        endDate: { lte: endDate },
-        status: "Approved",
+        startDate,
+        endDate,
+        status: "Pending", // Assuming "Pending" is the default status for a new leave
+        leaveReason: reason,
       },
-    });
-
-    if (overlappingAttendance) {
-      return {
-        success: false,
-        message:
-          "Cannot request leave. You have already marked attendance for one or more of the selected dates.",
-      };
-    }
-
-    const leaveDays: Date[] = [];
-    const currentDate = new Date(startDate);
-
-    while (currentDate <= endDate) {
-      leaveDays.push(new Date(currentDate));
-      currentDate.setDate(currentDate.getDate() + 1);
-    }
-
-    const leaveRecords = leaveDays.map((date) => ({
-      userId,
-      startDate: date,
-      endDate: date, // Use the date as both startDate and endDate for each record
-      status: LeaveStatusEnum.Pending,
-      leaveReason: reason,
-    }));
-
-    await prisma.leave.createMany({
-      data: leaveRecords,
     });
 
     return {

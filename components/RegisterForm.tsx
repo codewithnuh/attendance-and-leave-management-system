@@ -14,7 +14,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useRouter } from "next/navigation";
-
 // Password strength calculation utility
 function calculatePasswordStrength(password: string) {
   // Strength criteria
@@ -154,172 +153,174 @@ export default function SignupForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 max-w-lg mx-auto">
-      <Card>
-        <CardHeader>
-          <CardTitle>Register</CardTitle>
-          <CardDescription>Create an account to get started.</CardDescription>
-        </CardHeader>
+    <>
+      <form onSubmit={handleSubmit} className="space-y-6 max-w-lg mx-auto">
+        <Card>
+          <CardHeader>
+            <CardTitle>Register</CardTitle>
+            <CardDescription>Create an account to get started.</CardDescription>
+          </CardHeader>
 
-        <CardContent className="space-y-4">
-          {/* Name Field */}
-          <div>
-            <Label htmlFor="name">Name</Label>
-            <Input
-              id="name"
-              name="name"
-              placeholder="John Doe"
-              value={localFormData.name}
-              onChange={(e) => handleInputChange(e, "name")}
-              aria-invalid={!!submissionState.errors?.name}
-              disabled={isSubmitting}
-            />
-            {submissionState.errors?.name && (
-              <div className="text-red-500 text-sm mt-1">
-                {submissionState.errors.name.map((error, index) => (
-                  <p key={index}>{error}</p>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* Email Field */}
-          <div>
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              name="email"
-              type="email"
-              placeholder="john@example.com"
-              value={localFormData.email}
-              onChange={(e) => handleInputChange(e, "email")}
-              aria-invalid={!!submissionState.errors?.email}
-              disabled={isSubmitting}
-            />
-            {submissionState.errors?.email && (
-              <div className="text-red-500 text-sm mt-1">
-                {submissionState.errors.email.map((error, index) => (
-                  <p key={index}>{error}</p>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* Password Field with Strength Indicator */}
-          <div>
-            <Label htmlFor="password">Password</Label>
-            <Input
-              id="password"
-              name="password"
-              type="password"
-              placeholder="********"
-              value={localFormData.password}
-              onChange={(e) => handleInputChange(e, "password")}
-              aria-invalid={!!submissionState.errors?.password}
-              disabled={isSubmitting}
-            />
-
-            {/* Password Strength Indicator */}
-            <div className="mt-2 h-1 w-full bg-gray-200 rounded-full overflow-hidden">
-              <div
-                className={`h-full transition-all duration-300 ${
-                  strengthColors[passwordStrength.status]
-                } w-[${passwordStrength.strength}%]`}
+          <CardContent className="space-y-4">
+            {/* Name Field */}
+            <div>
+              <Label htmlFor="name">Name</Label>
+              <Input
+                id="name"
+                name="name"
+                placeholder="John Doe"
+                value={localFormData.name}
+                onChange={(e) => handleInputChange(e, "name")}
+                aria-invalid={!!submissionState.errors?.name}
+                disabled={isSubmitting}
               />
+              {submissionState.errors?.name && (
+                <div className="text-red-500 text-sm mt-1">
+                  {submissionState.errors.name.map((error, index) => (
+                    <p key={index}>{error}</p>
+                  ))}
+                </div>
+              )}
             </div>
 
-            {/* Password Requirements */}
-            <div className="mt-2 text-sm">
-              <p className="text-gray-600">Password must:</p>
-              <ul className="list-disc pl-5 text-xs text-gray-500">
-                <li
-                  className={
-                    passwordStrength.passedCriteria.some(
-                      (c) => c.message === "At least 8 characters long"
-                    )
-                      ? "text-green-600"
-                      : ""
-                  }
-                >
-                  Be at least 8 characters long
-                </li>
-                <li
-                  className={
-                    passwordStrength.passedCriteria.some(
-                      (c) => c.message === "Contains uppercase letter"
-                    )
-                      ? "text-green-600"
-                      : ""
-                  }
-                >
-                  Contain an uppercase letter
-                </li>
-                <li
-                  className={
-                    passwordStrength.passedCriteria.some(
-                      (c) => c.message === "Contains lowercase letter"
-                    )
-                      ? "text-green-600"
-                      : ""
-                  }
-                >
-                  Contain a lowercase letter
-                </li>
-                <li
-                  className={
-                    passwordStrength.passedCriteria.some(
-                      (c) => c.message === "Contains a number"
-                    )
-                      ? "text-green-600"
-                      : ""
-                  }
-                >
-                  Contain a number
-                </li>
-                <li
-                  className={
-                    passwordStrength.passedCriteria.some(
-                      (c) => c.message === "Contains a special character"
-                    )
-                      ? "text-green-600"
-                      : ""
-                  }
-                >
-                  Contain a special character
-                </li>
-              </ul>
+            {/* Email Field */}
+            <div>
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                name="email"
+                type="email"
+                placeholder="john@example.com"
+                value={localFormData.email}
+                onChange={(e) => handleInputChange(e, "email")}
+                aria-invalid={!!submissionState.errors?.email}
+                disabled={isSubmitting}
+              />
+              {submissionState.errors?.email && (
+                <div className="text-red-500 text-sm mt-1">
+                  {submissionState.errors.email.map((error, index) => (
+                    <p key={index}>{error}</p>
+                  ))}
+                </div>
+              )}
             </div>
 
-            {/* Specific Password Errors */}
-            {submissionState.errors?.password && (
-              <div className="text-red-500 text-sm mt-1">
-                {submissionState.errors.password.map((error) => (
-                  <p key={error}>{error}</p>
+            {/* Password Field with Strength Indicator */}
+            <div>
+              <Label htmlFor="password">Password</Label>
+              <Input
+                id="password"
+                name="password"
+                type="password"
+                placeholder="********"
+                value={localFormData.password}
+                onChange={(e) => handleInputChange(e, "password")}
+                aria-invalid={!!submissionState.errors?.password}
+                disabled={isSubmitting}
+              />
+
+              {/* Password Strength Indicator */}
+              <div className="mt-2 h-1 w-full bg-gray-200 rounded-full overflow-hidden">
+                <div
+                  className={`h-full transition-all duration-300 ${
+                    strengthColors[passwordStrength.status]
+                  } w-[${passwordStrength.strength}%]`}
+                />
+              </div>
+
+              {/* Password Requirements */}
+              <div className="mt-2 text-sm">
+                <p className="text-gray-600">Password must:</p>
+                <ul className="list-disc pl-5 text-xs text-gray-500">
+                  <li
+                    className={
+                      passwordStrength.passedCriteria.some(
+                        (c) => c.message === "At least 8 characters long"
+                      )
+                        ? "text-green-600"
+                        : ""
+                    }
+                  >
+                    Be at least 8 characters long
+                  </li>
+                  <li
+                    className={
+                      passwordStrength.passedCriteria.some(
+                        (c) => c.message === "Contains uppercase letter"
+                      )
+                        ? "text-green-600"
+                        : ""
+                    }
+                  >
+                    Contain an uppercase letter
+                  </li>
+                  <li
+                    className={
+                      passwordStrength.passedCriteria.some(
+                        (c) => c.message === "Contains lowercase letter"
+                      )
+                        ? "text-green-600"
+                        : ""
+                    }
+                  >
+                    Contain a lowercase letter
+                  </li>
+                  <li
+                    className={
+                      passwordStrength.passedCriteria.some(
+                        (c) => c.message === "Contains a number"
+                      )
+                        ? "text-green-600"
+                        : ""
+                    }
+                  >
+                    Contain a number
+                  </li>
+                  <li
+                    className={
+                      passwordStrength.passedCriteria.some(
+                        (c) => c.message === "Contains a special character"
+                      )
+                        ? "text-green-600"
+                        : ""
+                    }
+                  >
+                    Contain a special character
+                  </li>
+                </ul>
+              </div>
+
+              {/* Specific Password Errors */}
+              {submissionState.errors?.password && (
+                <div className="text-red-500 text-sm mt-1">
+                  {submissionState.errors.password.map((error) => (
+                    <p key={error}>{error}</p>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* General Error Message */}
+            {submissionState.errors?.general && (
+              <div className="text-red-500 text-sm mt-2">
+                {submissionState.errors.general.map((error, index) => (
+                  <p key={index}>{error}</p>
                 ))}
               </div>
             )}
-          </div>
+          </CardContent>
 
-          {/* General Error Message */}
-          {submissionState.errors?.general && (
-            <div className="text-red-500 text-sm mt-2">
-              {submissionState.errors.general.map((error, index) => (
-                <p key={index}>{error}</p>
-              ))}
-            </div>
-          )}
-        </CardContent>
-
-        <CardFooter>
-          <Button
-            type="submit"
-            className="w-full"
-            disabled={isSubmitting || passwordStrength.status === "weak"}
-          >
-            {isSubmitting ? "Signing Up..." : "Sign Up"}
-          </Button>
-        </CardFooter>
-      </Card>
-    </form>
+          <CardFooter>
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={isSubmitting || passwordStrength.status === "weak"}
+            >
+              {isSubmitting ? "Signing Up..." : "Sign Up"}
+            </Button>
+          </CardFooter>
+        </Card>
+      </form>
+    </>
   );
 }

@@ -5,42 +5,15 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
+import { Table, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { fetchPendingLeaves } from "@/lib/definitions";
+import LeaveRequest from "@/components/LeaveRequest";
+export default async function LeaveRequestsPage() {
+  // Fetch pending leave requests
+  const leaveRequests = await fetchPendingLeaves();
 
-// Mock data for leave requests
-const leaveRequests = [
-  {
-    id: 1,
-    user: "John Doe",
-    startDate: "2023-11-10",
-    endDate: "2023-11-12",
-    reason: "Family vacation",
-  },
-  {
-    id: 2,
-    user: "Jane Smith",
-    startDate: "2023-11-15",
-    endDate: "2023-11-15",
-    reason: "Medical appointment",
-  },
-  {
-    id: 3,
-    user: "Bob Johnson",
-    startDate: "2023-11-20",
-    endDate: "2023-11-22",
-    reason: "Personal leave",
-  },
-];
+  // Handle leave approval
 
-export default function LeaveRequests() {
   return (
     <div className="min-h-screen bg-background">
       <main className="container mx-auto px-4 py-8">
@@ -60,24 +33,7 @@ export default function LeaveRequests() {
                   <TableHead>Actions</TableHead>
                 </TableRow>
               </TableHeader>
-              <TableBody>
-                {leaveRequests.map((request) => (
-                  <TableRow key={request.id}>
-                    <TableCell>{request.user}</TableCell>
-                    <TableCell>{request.startDate}</TableCell>
-                    <TableCell>{request.endDate}</TableCell>
-                    <TableCell>{request.reason}</TableCell>
-                    <TableCell>
-                      <Button variant="outline" size="sm" className="mr-2">
-                        Approve
-                      </Button>
-                      <Button variant="destructive" size="sm">
-                        Reject
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
+              <LeaveRequest leaveRequests={leaveRequests} />
             </Table>
           </CardContent>
         </Card>
