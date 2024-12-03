@@ -32,7 +32,8 @@ export async function decrypt(session: string | undefined = "") {
       algorithms: ["HS256"],
     });
     return payload as { userId: string; isAdmin: boolean; expiresAt: string };
-  } catch (error) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error: unknown) {
     console.log("Failed to verify session");
   }
 }
