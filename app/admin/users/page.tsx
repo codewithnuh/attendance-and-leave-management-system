@@ -15,8 +15,8 @@ export default async function UserManagement() {
           <CardHeader>
             <CardTitle>User Management</CardTitle>
             <CardDescription>Manage system users</CardDescription>
-            <UserDetails ALL_USERS={ALL_USERS} />
           </CardHeader>
+          <UserDetails ALL_USERS={ALL_USERS} />
         </Card>
       </main>
     </div>

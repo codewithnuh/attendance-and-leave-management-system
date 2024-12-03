@@ -50,6 +50,14 @@ model Leave {
     user        User            @relation("UserLeave", fields: [userId], references: [id])
 }
 
+model Grade {
+    id            String   @id @default(cuid())
+    grade         String
+    minAttendance Int
+    createdAt     DateTime @default(now())
+    updatedAt     DateTime @updatedAt
+}
+
 // Enum to define attendance status
 enum StatusEnum {
     Present

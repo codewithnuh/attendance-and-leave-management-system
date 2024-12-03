@@ -1,3 +1,4 @@
+import { AttendanceChart } from "@/components/admin/AttendanceChart";
 import {
   Card,
   CardContent,
@@ -42,15 +43,7 @@ export default function AdminDashboard() {
             </CardContent>
           </Card>
         </div>
-        <Card>
-          <CardHeader>
-            <CardTitle>Attendance Trends</CardTitle>
-            <CardDescription>Weekly attendance statistics</CardDescription>
-          </CardHeader>
-          <CardContent className="h-[300px]">
-            {/* <BarChart data={[]} /> */}
-          </CardContent>
-        </Card>
+        <AttendanceChart />
       </main>
     </div>
   );
