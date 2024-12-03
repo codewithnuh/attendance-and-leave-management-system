@@ -4,7 +4,7 @@ import { getUserIdFromSession } from "@/lib/session";
 export default async function MarkAttendance() {
   const userId = await getUserIdFromSession();
   const attendance = await fetchAttendanceStatus(userId);
-
+  console.log(new Date().getDate());
   return (
     <div className="min-h-screen bg-background">
       <main className="container mx-auto px-4 py-8">

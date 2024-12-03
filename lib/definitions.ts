@@ -34,9 +34,44 @@ export type FormState =
   | undefined;
 
 export const fetchAttendanceStatus = async (userId: string) => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0); // Normalize to the start of the day
+  const tomorrow = new Date(today);
+  tomorrow.setDate(today.getDate() + 1); // Start of the next day
+
   return await prisma.attendance.findFirst({
     where: {
       userId,
+      date: {
+        gte: today, // Greater than or equal to the start of today
+        lt: tomorrow, // Less than the start of tomorrow (ensures only today's record)
+      },
     },
   });
+};
+
+export const fetchUserDetails = async (id: string) => {
+  return await prisma.user.findFirst({
+    where: {
+      id,
+    },
+  });
+};
+// utils/fetchAttendanceStatus.ts
+
+export const fetchAttendanceHistory = async (userId: string) => {
+  // Fetch all attendance records for the user
+  const attendanceRecords = await prisma.attendance.findMany({
+    where: {
+      userId,
+    },
+    orderBy: {
+      date: "desc", // Orders records by the most recent first
+    },
+  });
+
+  return attendanceRecords.map((record) => ({
+    date: record.date.toISOString().split("T")[0], // Format date as YYYY-MM-DD
+    status: record.status,
+  }));
 };

@@ -8,8 +8,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { fetchUserDetails } from "@/lib/definitions";
+import { getUserIdFromSession } from "@/lib/session";
 
-export default function Dashboard() {
+export default async function Dashboard() {
+  const userId = await getUserIdFromSession();
+  const userDetails = await fetchUserDetails(userId);
   return (
     <div className="min-h-screen bg-background">
       <main className="container mx-auto px-4 py-8">
@@ -62,8 +66,10 @@ export default function Dashboard() {
               <AvatarFallback>JD</AvatarFallback>
             </Avatar>
             <div>
-              <h3 className="text-lg font-semibold">John Doe</h3>
-              <p className="text-sm text-muted-foreground">john@example.com</p>
+              <h3 className="text-lg font-semibold">{userDetails?.name}</h3>
+              <p className="text-sm text-muted-foreground">
+                {userDetails?.email}
+              </p>
               <Button variant="outline" className="mt-2">
                 Edit Profile
               </Button>

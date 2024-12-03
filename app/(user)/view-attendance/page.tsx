@@ -13,17 +13,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { fetchAttendanceHistory } from "@/lib/definitions";
+import { getUserIdFromSession } from "@/lib/session";
 
-// Mock data for attendance records
-const attendanceRecords = [
-  { date: "2023-11-01", status: "Present" },
-  { date: "2023-11-02", status: "Present" },
-  { date: "2023-11-03", status: "Absent" },
-  { date: "2023-11-04", status: "Present" },
-  { date: "2023-11-05", status: "Leave" },
-];
-
-export default function ViewAttendance() {
+export default async function ViewAttendance() {
+  const userId = await getUserIdFromSession();
+  const attendanceHistory = await fetchAttendanceHistory(userId);
   return (
     <div className="min-h-screen bg-background">
       <main className="container mx-auto px-4 py-8">
@@ -41,12 +36,20 @@ export default function ViewAttendance() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {attendanceRecords.map((record, index) => (
-                  <TableRow key={index}>
-                    <TableCell>{record.date}</TableCell>
-                    <TableCell>{record.status}</TableCell>
+                {attendanceHistory.length > 0 ? (
+                  attendanceHistory.map((record, index) => (
+                    <TableRow key={index}>
+                      <TableCell>{record.date}</TableCell>
+                      <TableCell>{record.status}</TableCell>
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell colSpan={2} className="text-center">
+                      No attendance records found.
+                    </TableCell>
                   </TableRow>
-                ))}
+                )}
               </TableBody>
             </Table>
           </CardContent>

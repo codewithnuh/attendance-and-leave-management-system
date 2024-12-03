@@ -5,9 +5,6 @@ import { prisma } from "@/lib/prisma";
 interface AttendanceResult {
   success: boolean;
   message: string;
-  alreadyMarked?: boolean;
-  status?: string; // Add the status to the response
-  error?: string;
 }
 
 export async function markAttendance(
@@ -15,29 +12,29 @@ export async function markAttendance(
 ): Promise<AttendanceResult> {
   const today = new Date();
   today.setHours(0, 0, 0, 0); // Normalize to the start of the day
-  console.log(today);
+  const tomorrow = new Date(today);
+  tomorrow.setDate(today.getDate() + 1); // Get the start of tomorrow
+
   try {
-    // Check if attendance or leave has already been recorded for today
-    const existingEntry = await prisma.attendance.findFirst({
+    // 1. Check if attendance has already been marked for today
+    const existingAttendance = await prisma.attendance.findFirst({
       where: {
         userId,
-        date: today,
+        date: {
+          gte: today,
+          lt: tomorrow, // Check for today's date only
+        },
       },
     });
 
-    if (existingEntry) {
+    if (existingAttendance) {
       return {
         success: false,
-        message:
-          existingEntry.status === "Present"
-            ? "Attendance already marked for today."
-            : "Cannot mark attendance as leave has been requested.",
-        status: existingEntry.status, // Return the existing status
-        alreadyMarked: true, // Indicate that it's already marked
+        message: "Attendance already marked for today.",
       };
     }
 
-    // Mark attendance as Present if not already marked
+    // 2. Mark attendance as present if no attendance recorded
     await prisma.attendance.create({
       data: {
         userId,
@@ -49,15 +46,12 @@ export async function markAttendance(
     return {
       success: true,
       message: "Attendance marked successfully!",
-      status: "Present", // Return the updated status
     };
   } catch (error) {
     console.error(error);
     return {
-      status,
-      message: "Failed to mark attendance. Please try again.",
       success: false,
-      error: "Failed to mark attendance. Please try again.",
+      message: "Failed to mark attendance. Please try again.",
     };
   }
 }

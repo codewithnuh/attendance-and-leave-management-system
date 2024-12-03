@@ -38,6 +38,12 @@ enum StatusEnum {
     Leave
 }
 
+enum LeaveStatusEnum {
+    Pending
+    Approved
+    Declined
+}
+
 enum Role {
     USER
     ADMIN

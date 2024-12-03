@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { Header } from "@/components/header";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,9 +9,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-// import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-// import { Textarea } from "@/components/ui/textarea";
+import { Textarea } from "@/components/ui/textarea";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
@@ -106,10 +104,10 @@ export default function MarkLeave() {
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="reason">Reason for Leave</Label>
-                    {/* <Textarea
-                  id="reason"
-                  placeholder="Enter your reason for leave"
-                /> */}
+                    <Textarea
+                      id="reason"
+                      placeholder="Enter your reason for leave"
+                    />
                   </div>
                   <Button type="submit" className="w-full">
                     Submit Leave Request
