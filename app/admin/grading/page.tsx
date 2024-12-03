@@ -84,6 +84,7 @@ export default function GradingSystem() {
                     <TableCell>
                       <Input
                         value={grade.grade}
+                        readOnly
                         onChange={(e) =>
                           handleUpdateGrade(index, "grade", e.target.value)
                         }
