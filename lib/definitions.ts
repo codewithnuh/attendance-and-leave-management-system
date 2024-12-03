@@ -94,3 +94,11 @@ export const fetchPendingLeaves = async () => {
   });
   return pendingLeaves;
 };
+export const fetchAllUsers = async () => {
+  const allUsers = await prisma.user.findMany({
+    where: {
+      role: "USER",
+    },
+  });
+  return allUsers;
+};

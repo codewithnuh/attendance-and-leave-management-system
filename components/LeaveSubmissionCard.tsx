@@ -35,17 +35,17 @@ const LeaveSubmissionCard = ({
   const [reason, setReason] = useState<string>("");
   const [submit, setSubmit] = useState<boolean>(false);
   const [statusMessage, setStatusMessage] = useState<string>("");
-
+  console.log(startDate);
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     setSubmit(true);
     setStatusMessage("Submitting your leave request...");
-    console.log("Payload:", {
-      userId, // Replace with the dynamic user ID
-      startDate,
-      endDate,
-      reason,
-    });
+    // console.log("Payload:", {
+    //   userId, // Replace with the dynamic user ID
+    //   startDate,
+    //   endDate,
+    //   reason,
+    // });
     try {
       const response = await markLeave({
         userId, // replace with the actual userId
