@@ -35,6 +35,13 @@ export default async function LeaveRequestsPage() {
               </TableHeader>
               <LeaveRequest leaveRequests={leaveRequests} />
             </Table>
+            <div>
+              {!leaveRequests.length && (
+                <h1 className="text-center mt-5 text-3xl">
+                  NO LEAVE REQUESTS FOUND
+                </h1>
+              )}
+            </div>
           </CardContent>
         </Card>
       </main>

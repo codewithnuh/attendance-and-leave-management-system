@@ -41,7 +41,9 @@ export default function GradingSystem() {
               <TableHeader>
                 <TableRow>
                   <TableHead>Grade</TableHead>
-                  <TableHead>Minimum Attendance (%)</TableHead>
+                  <TableHead>
+                    Minimum <br className="md:hidden" /> Attendance (%)
+                  </TableHead>
                   <TableHead>Actions</TableHead>
                 </TableRow>
               </TableHeader>

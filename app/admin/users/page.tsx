@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/card";
 import { getUserAttendanceData } from "@/lib/actions/user-details.action";
 export default async function UserManagement() {
-  const ALL_USERS = await getUserAttendanceData();
+  const ALL_USERS_ATTENDANCE_DATA = await getUserAttendanceData();
   return (
     <div className="min-h-screen bg-background">
       <main className="container mx-auto px-4 py-8">
@@ -16,7 +16,7 @@ export default async function UserManagement() {
             <CardTitle>User Management</CardTitle>
             <CardDescription>Manage system users</CardDescription>
           </CardHeader>
-          <UserDetails ALL_USERS={ALL_USERS} />
+          <UserDetails ALL_USERS_ATTENDANCE_DATA={ALL_USERS_ATTENDANCE_DATA} />
         </Card>
       </main>
     </div>

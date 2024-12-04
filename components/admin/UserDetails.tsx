@@ -36,12 +36,14 @@ interface User {
 }
 
 interface UserDetailsProps {
-  ALL_USERS: User[];
+  ALL_USERS_ATTENDANCE_DATA: User[];
 }
 
-const UserDetails: React.FC<UserDetailsProps> = ({ ALL_USERS }) => {
+const UserDetails: React.FC<UserDetailsProps> = ({
+  ALL_USERS_ATTENDANCE_DATA,
+}) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const [users, setUsers] = useState<User[]>(ALL_USERS);
+  const [users, setUsers] = useState<User[]>(ALL_USERS_ATTENDANCE_DATA);
   const { toast } = useToast();
 
   const handleDelete = async (userId: string) => {
@@ -120,6 +122,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({ ALL_USERS }) => {
                     <AlertDialogFooter>
                       <AlertDialogCancel>Cancel</AlertDialogCancel>
                       <AlertDialogAction
+                        className="bg-red-900 hover:bg-red-900/50 text-foreground"
                         onClick={() => {
                           handleDelete(user.id);
                           console.log(user);

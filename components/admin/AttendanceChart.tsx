@@ -19,11 +19,11 @@ import {
 } from "@/components/ui/chart";
 
 const chartData = [
-  { day: "Monday", present: 25, absent: 5 },
-  { day: "Tuesday", present: 22, absent: 8 },
-  { day: "Wednesday", present: 20, absent: 10 },
-  { day: "Thursday", present: 27, absent: 3 },
-  { day: "Friday", present: 28, absent: 2 },
+  { day: "Monday", present: 25, absent: 5, leave: 2 },
+  { day: "Tuesday", present: 22, absent: 8, leave: 5 },
+  { day: "Wednesday", present: 20, absent: 10, leave: 3 },
+  { day: "Thursday", present: 27, absent: 3, leave: 4 },
+  { day: "Friday", present: 28, absent: 2, leave: 7 },
 ];
 
 const chartConfig = {
@@ -33,6 +33,10 @@ const chartConfig = {
   },
   absent: {
     label: "Absent",
+    color: "hsl(var(--chart-2))",
+  },
+  leave: {
+    label: "Leave",
     color: "hsl(var(--chart-2))",
   },
 } satisfies ChartConfig;
@@ -59,8 +63,21 @@ export function AttendanceChart() {
               cursor={false}
               content={<ChartTooltipContent indicator="dashed" />}
             />
-            <Bar dataKey="present" fill="hsl( 221.2 83.2% 53.3%)" radius={4} />
-            <Bar dataKey="absent" fill="hsl(  212 95% 68%)" radius={4} />
+            <Bar
+              dataKey="present"
+              fill="hsl( 263.39deg 69.96% 50.39%)"
+              radius={4}
+            />
+            <Bar
+              dataKey="absent"
+              fill="hsl(287.46deg 65.05% 40.39%)"
+              radius={4}
+            />
+            <Bar
+              dataKey="leave"
+              fill="hsl(328.03deg 81.33% 29.41%)"
+              radius={4}
+            />
           </BarChart>
         </ChartContainer>
       </CardContent>
