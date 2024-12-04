@@ -7,6 +7,7 @@ import {
 import { fetchAllUsers } from "@/lib/definitions";
 // import { Input } from "@/components/ui/input";
 import AttendanceManagement from "@/components/AttendanceManagement";
+export const dynamic = "force-dynamic";
 export default async function AttendanceManagementPage() {
   const ALL_USERS = await fetchAllUsers();
   return (

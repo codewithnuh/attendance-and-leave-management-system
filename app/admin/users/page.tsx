@@ -6,6 +6,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { getUserAttendanceData } from "@/lib/actions/user-details.action";
+export const dynamic = "force-dynamic";
 export default async function UserManagement() {
   const ALL_USERS_ATTENDANCE_DATA = await getUserAttendanceData();
   return (

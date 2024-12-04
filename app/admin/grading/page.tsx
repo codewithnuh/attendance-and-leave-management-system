@@ -19,6 +19,7 @@ import AddGrade from "@/components/admin/AddGrade";
 import { fetchAllGrades } from "@/lib/actions/grade.action";
 import DeleteGrade from "@/components/admin/DeleteGrade";
 
+export const dynamic = "force-dynamic";
 export default async function GradingSystem() {
   const ALL_GRADES = await fetchAllGrades();
   return (

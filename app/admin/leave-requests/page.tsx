@@ -8,6 +8,7 @@ import {
 import { Table, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { fetchPendingLeaves } from "@/lib/definitions";
 import LeaveRequest from "@/components/LeaveRequest";
+export const dynamic = "force-dynamic";
 export default async function LeaveRequestsPage() {
   // Fetch pending leave requests
   const leaveRequests = await fetchPendingLeaves();
