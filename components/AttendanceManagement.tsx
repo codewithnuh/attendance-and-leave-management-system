@@ -22,15 +22,22 @@ import {
 import { CardContent } from "./ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { updateAttendance } from "@/lib/actions/update-attendance.action";
+interface User {
+  id: string;
+  name: string;
+}
 
-const AttendanceManagement = ({ ALL_USERS }) => {
+interface AttendanceManagementProps {
+  ALL_USERS: User[];
+}
+const AttendanceManagement = ({ ALL_USERS }: AttendanceManagementProps) => {
   const { toast } = useToast();
-  const [userId, setUserId] = useState(null);
+  const [userId, setUserId] = useState<string | null>(null);
   const [date, setDate] = useState<Date | undefined>();
 
-  const [status, setStatus] = useState(null);
+  const [status, setStatus] = useState<string | null>(null);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!userId || !date || !status) {
@@ -63,7 +70,7 @@ const AttendanceManagement = ({ ALL_USERS }) => {
     } catch (error) {
       toast({
         title: "Error",
-        description: error.message || "Failed to update attendance",
+        description: (error as Error).message || "Failed to update attendance",
         variant: "destructive",
       });
     }
@@ -74,12 +81,12 @@ const AttendanceManagement = ({ ALL_USERS }) => {
       <form className="space-y-4" onSubmit={handleSubmit}>
         <div className="space-y-2">
           <Label htmlFor="user">User</Label>
-          <Select onValueChange={(value) => setUserId(value)}>
+          <Select onValueChange={(value: string) => setUserId(value)}>
             <SelectTrigger id="user">
               <SelectValue placeholder="Select a user" />
             </SelectTrigger>
             <SelectContent>
-              {ALL_USERS.map((user) => (
+              {ALL_USERS.map((user: User) => (
                 <SelectItem key={user.id} value={user.id}>
                   {user.name}
                 </SelectItem>
@@ -87,43 +94,6 @@ const AttendanceManagement = ({ ALL_USERS }) => {
             </SelectContent>
           </Select>
         </div>
-        <div className="space-y-2">
-          <Label htmlFor="date">Date</Label>
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button variant="outline" className={cn("w-full justify-start")}>
-                <CalendarIcon className="mr-2 h-4 w-4" />
-                {date ? format(date, "PPP") : "Pick a date"}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0">
-              <Calendar
-                mode="single"
-                selected={date} // `date` is of type `Date | undefined`
-                onSelect={(selectedDate) => {
-                  if (selectedDate instanceof Date) {
-                    setDate(selectedDate); // Ensure `date` is always a valid `Date` object
-                  }
-                }}
-                initialFocus
-              />
-            </PopoverContent>
-          </Popover>
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="status">Status</Label>
-          <Select onValueChange={(value) => setStatus(value)}>
-            <SelectTrigger id="status">
-              <SelectValue placeholder="Select status" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="Present">Present</SelectItem>
-              <SelectItem value="Absent">Absent</SelectItem>
-              <SelectItem value="Leave">Leave</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-        <Button type="submit">Update Attendance</Button>
       </form>
     </CardContent>
   );

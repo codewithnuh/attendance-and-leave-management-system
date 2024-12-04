@@ -46,7 +46,7 @@ const AddGrade = () => {
           <Input
             id="new-min-attendance"
             name="minAttendance"
-            onChange={(e) => setGradeValue(e.target.value)}
+            onChange={(e) => setGradeValue(+e.target.value)}
             type="number"
             placeholder="e.g., 95"
           />

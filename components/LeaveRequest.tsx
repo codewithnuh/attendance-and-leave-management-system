@@ -67,7 +67,7 @@ const LeaveRequest = ({ leaveRequests }: { leaveRequests: any }) => {
   };
   return (
     <TableBody>
-      {leaveRequests.map((request) => (
+      {leaveRequests.map((request: any) => (
         <TableRow key={request.id}>
           <TableCell>{request.user.name}</TableCell>
           <TableCell>

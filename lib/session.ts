@@ -15,7 +15,11 @@ export async function encrypt(payload: SessionPayload) {
 
 export async function createSession(userId: string, isAdmin: boolean) {
   const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
-  const session = await encrypt({ userId, isAdmin, expiresAt });
+  const session = await encrypt({
+    userId,
+    isAdmin,
+    expiresAt: expiresAt.toISOString(),
+  });
 
   (await cookies()).set("session", session, {
     httpOnly: true,

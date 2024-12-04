@@ -62,7 +62,7 @@ export async function markLeave({
     return {
       success: false,
       message: "Failed to submit leave request. Please try again later.",
-      error: error.message,
+      error: (error as Error).message,
     };
   }
 }

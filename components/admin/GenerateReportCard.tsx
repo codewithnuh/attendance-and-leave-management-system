@@ -26,7 +26,9 @@ import { generateReport } from "@/lib/actions/generate-report.action"; // Adjust
 const GenerateReportCard = () => {
   const [startDate, setStartDate] = useState<Date>();
   const [endDate, setEndDate] = useState<Date>();
-  const [reportType, setReportType] = useState<string>();
+  const [reportType, setReportType] = useState<
+    "summary" | "attendance" | "leave"
+  >();
 
   const handleGenerateReport = async () => {
     if (!startDate || !endDate || !reportType) {
@@ -42,13 +44,13 @@ const GenerateReportCard = () => {
 
       // Call the server action directly
       const reportBuffer = await generateReport({
-        startDate,
-        endDate,
+        startDate: startDate.toISOString(),
+        endDate: endDate.toISOString(),
         reportType,
       });
 
       // Convert the buffer to a downloadable file
-      const blob = new Blob([reportBuffer], {
+      const blob = new Blob([reportBuffer.buffer], {
         type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       });
       const url = window.URL.createObjectURL(blob);
@@ -71,7 +73,9 @@ const GenerateReportCard = () => {
       });
     }
   };
-
+  const handleReportTypeChange = (value: string) => {
+    setReportType(value as "summary" | "attendance" | "leave");
+  };
   return (
     <CardContent>
       <form className="space-y-4">
@@ -133,7 +137,7 @@ const GenerateReportCard = () => {
         </div>
         <div className="space-y-2">
           <Label htmlFor="report-type">Report Type</Label>
-          <Select onValueChange={setReportType}>
+          <Select onValueChange={handleReportTypeChange}>
             <SelectTrigger id="report-type">
               <SelectValue placeholder="Select report type" />
             </SelectTrigger>

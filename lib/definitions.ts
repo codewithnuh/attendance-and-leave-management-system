@@ -19,7 +19,9 @@ export const registerSchema = z.object({
 // Define the structure of the session payload
 export interface SessionPayload {
   userId: string; // Unique user identifier
-  [key: string]: string;
+  isAdmin: boolean; // Is the user an admin?
+  expiresAt: string; // Expiration time of the session
+  [key: string]: string | boolean;
 }
 
 export type FormState =

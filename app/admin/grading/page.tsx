@@ -43,17 +43,20 @@ export default async function GradingSystem() {
                   <TableHead>Actions</TableHead>
                 </TableRow>
               </TableHeader>
-              <TableBody>
-                {ALL_GRADES.map((grade, index) => (
-                  <TableRow key={index}>
-                    <DeleteGrade
-                      gradeName={grade.grade}
-                      minAttendance={grade.minAttendance}
-                      gradeId={grade.id}
-                    />
-                  </TableRow>
-                ))}
-              </TableBody>
+
+              {Array.isArray(ALL_GRADES) && (
+                <TableBody>
+                  {ALL_GRADES.map((grade, index) => (
+                    <TableRow key={index}>
+                      <DeleteGrade
+                        gradeName={grade.grade}
+                        minAttendance={grade.minAttendance}
+                        gradeId={grade.id}
+                      />
+                    </TableRow>
+                  ))}
+                </TableBody>
+              )}
             </Table>
             <AddGrade />
           </CardContent>

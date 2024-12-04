@@ -5,8 +5,16 @@ import { Button } from "../ui/button";
 import { TableCell } from "../ui/table";
 import { deleteGrade } from "@/lib/actions/grade.action";
 import { useToast } from "@/hooks/use-toast";
-
-const DeleteGrade = ({ gradeName, minAttendance, gradeId }) => {
+interface DeleteGradeProps {
+  gradeName: string;
+  minAttendance: number;
+  gradeId: string;
+}
+const DeleteGrade = ({
+  gradeName,
+  minAttendance,
+  gradeId,
+}: DeleteGradeProps) => {
   const { toast } = useToast();
   const handleDeleteGrade = async (gradeId: string) => {
     try {
