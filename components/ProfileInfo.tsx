@@ -49,9 +49,11 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({ userDetails, userId }) => {
   // Submit handler to update user details
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    const response = await updateUserProfile(userId, { name, profilePicture });
-    if (response.success) {
+    try {
+      const response = await updateUserProfile(userId, {
+        name,
+        profilePicture,
+      });
       // Update local details on success
       setLocalDetails({ ...localDetails, name, profilePicture });
       setIsDialogOpen(false); // Close the modal
@@ -60,7 +62,7 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({ userDetails, userId }) => {
         title: "Success",
         description: "Profile updated successfully",
       });
-    } else {
+    } catch (error) {
       toast({
         variant: "destructive",
         title: "Error",

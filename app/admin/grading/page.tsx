@@ -16,16 +16,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import AddGrade from "@/components/admin/AddGrade";
+import { fetchAllGrades } from "@/lib/actions/grade.action";
+import DeleteGrade from "@/components/admin/DeleteGrade";
 
-const grades = [
-  { grade: "A", minAttendance: 90 },
-  { grade: "B", minAttendance: 80 },
-  { grade: "C", minAttendance: 70 },
-  { grade: "D", minAttendance: 60 },
-  { grade: "F", minAttendance: 0 },
-];
-
-export default function GradingSystem() {
+export default async function GradingSystem() {
+  const ALL_GRADES = await fetchAllGrades();
+  console.log(ALL_GRADES);
   return (
     <div className="min-h-screen bg-background">
       <main className="container mx-auto px-4 py-8">
@@ -48,23 +44,13 @@ export default function GradingSystem() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {grades.map((grade, index) => (
+                {ALL_GRADES.map((grade, index) => (
                   <TableRow key={index}>
-                    <TableCell>
-                      <Input readOnly value={grade.grade} />
-                    </TableCell>
-                    <TableCell>
-                      <Input
-                        type="number"
-                        readOnly
-                        value={grade.minAttendance}
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <Button variant="destructive" size="sm">
-                        Delete
-                      </Button>
-                    </TableCell>
+                    <DeleteGrade
+                      gradeName={grade.grade}
+                      minAttendance={grade.minAttendance}
+                      gradeId={grade.id}
+                    />
                   </TableRow>
                 ))}
               </TableBody>

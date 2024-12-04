@@ -40,3 +40,15 @@ export async function deleteGrade(gradeId: string) {
     };
   }
 }
+export async function fetchAllGrades() {
+  try {
+    const allGrades = await prisma.grade.findMany({});
+    return allGrades;
+  } catch (error) {
+    // console.error("Error deleting grade:", error);
+    return {
+      success: false,
+      message: "Failed to fetch grades.",
+    };
+  }
+}

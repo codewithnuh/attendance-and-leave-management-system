@@ -3,11 +3,11 @@ import React, { useState } from "react";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { addGrade } from "@/lib/actions/grade.action";
+import { addGrade, deleteGrade } from "@/lib/actions/grade.action";
 import { useToast } from "@/hooks/use-toast";
 const AddGrade = () => {
   const [gradeName, setGradeName] = useState("");
-  const [gradeValue, setGradeValue] = useState<number | undefined>();
+  const [gradeValue, setGradeValue] = useState<number>(0);
   console.log({ gradeName, gradeValue });
   const { toast } = useToast();
   const handleAddGrade = async (grade: string, minAttendance: number) => {
@@ -27,6 +27,7 @@ const AddGrade = () => {
       });
     }
   };
+
   return (
     <div className="mt-4 ">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 items-center">
@@ -45,6 +46,7 @@ const AddGrade = () => {
           <Input
             id="new-min-attendance"
             name="minAttendance"
+            onChange={(e) => setGradeValue(e.target.value)}
             type="number"
             placeholder="e.g., 95"
           />
@@ -53,7 +55,7 @@ const AddGrade = () => {
       <div className="inline-flex items-center justify-center w-full mt-4">
         <Button
           className="w-full"
-          onClick={() => handleAddGrade(gradeName, gradeValue)}
+          onClick={() => handleAddGrade(gradeName, gradeValue!)}
         >
           Add Grade
         </Button>
