@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { CalendarIcon } from "lucide-react";
@@ -42,29 +42,36 @@ const GenerateReportCard = () => {
     try {
       toast({ description: "Generating report...", variant: "default" });
 
-      // Call the server action directly
-      const reportBuffer = await generateReport({
+      const report = await generateReport({
         startDate: startDate.toISOString(),
         endDate: endDate.toISOString(),
         reportType,
       });
 
-      // Convert the buffer to a downloadable file
-      const blob = new Blob([reportBuffer.buffer], {
-        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-      });
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "report.xlsx";
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
+      if (typeof window !== "undefined") {
+        // Decode Base64 string into binary data
+        const binaryString = atob(report.buffer);
+        const binaryBuffer = new Uint8Array(
+          binaryString.split("").map((char) => char.charCodeAt(0))
+        );
 
-      toast({
-        description: "Report downloaded successfully!",
-        variant: "default",
-      });
+        const blob = new Blob([binaryBuffer], {
+          type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = report.filename;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+
+        toast({
+          description: "Report downloaded successfully!",
+          variant: "default",
+        });
+      }
     } catch (error) {
       console.error(error);
       toast({
@@ -73,9 +80,11 @@ const GenerateReportCard = () => {
       });
     }
   };
+
   const handleReportTypeChange = (value: string) => {
     setReportType(value as "summary" | "attendance" | "leave");
   };
+
   return (
     <CardContent>
       <form className="space-y-4">

@@ -1,7 +1,6 @@
 "use server";
 import { prisma } from "@/lib/prisma";
 export async function addGrade(grade: string, minAttendance: number) {
-  console.log(grade, minAttendance);
   try {
     const newGrade = await prisma.grade.create({
       data: {
