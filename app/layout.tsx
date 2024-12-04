@@ -26,6 +26,11 @@ const poppinsSemiBold = localFont({
 export const metadata: Metadata = {
   title: "Attendance and Leave Management System",
   description: "Manage attendance and leave requests efficiently",
+  openGraph: {
+    title: "Attendance and Leave Management System",
+    description: "Manage attendance and leave requests efficiently",
+    images: ["/ALMS.webp"],
+  },
 };
 export default function RootLayout({
   children,
