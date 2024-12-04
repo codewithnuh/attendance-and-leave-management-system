@@ -53,7 +53,15 @@ export default async function Dashboard() {
             </CardContent>
           </Card>
         </div>
-        <ProfileInfo userId={userId} userDetails={userDetails} />
+        {userDetails && (
+          <ProfileInfo
+            userId={userId}
+            userDetails={{
+              ...userDetails,
+              profilePicture: userDetails.profilePicture ?? undefined,
+            }}
+          />
+        )}
       </main>
     </div>
   );
