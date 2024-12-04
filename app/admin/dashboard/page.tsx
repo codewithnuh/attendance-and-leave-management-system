@@ -2,7 +2,7 @@ import { AttendanceChart } from "@/components/admin/AttendanceChart";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getUserAttendanceData } from "@/lib/actions/user-details.action";
 export default async function AdminDashboard() {
-  const ALL_USERS_ATTENDANCE_DATA = await getUserAttendanceData();
+  // const ALL_USERS_ATTENDANCE_DATA = await getUserAttendanceData();
   return (
     <div className="min-h-screen bg-background">
       <main className="container mx-auto px-4 py-8">
