@@ -19,7 +19,7 @@ const LeaveRequest = ({ leaveRequests }: { leaveRequests: any }) => {
         });
 
         // Optionally, refresh the UI (server-side re-render or optimistic update)
-        window.location.reload(); // Simplest approach to refresh data
+        // window.location.reload(); // Simplest approach to refresh data
       } else {
         toast({
           title: "Error",
@@ -48,7 +48,7 @@ const LeaveRequest = ({ leaveRequests }: { leaveRequests: any }) => {
         });
 
         // Optionally, refresh the UI (server-side re-render or optimistic update)
-        window.location.reload(); // Simplest approach to refresh data
+        // window.location.reload(); // Simplest approach to refresh data
       } else {
         toast({
           title: "Error",

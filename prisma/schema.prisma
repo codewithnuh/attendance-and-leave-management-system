@@ -1,79 +1,68 @@
-// Define the database connection and Prisma client generator
-datasource db {
-    provider = "postgresql"
-    url      = env("DATABASE_URL")
-}
-
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
-// User model to manage application users
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
 model User {
-    id             String   @id @default(cuid()) // Use globally unique IDs
-    name           String
-    email          String   @unique
-    password       String   @db.VarChar(255) // Store hashed passwords securely
-    profilePicture String? // Optional user profile picture
-    role           Role     @default(USER) // Role enum: USER or ADMIN
-    createdAt      DateTime @default(now())
-    updatedAt      DateTime @updatedAt
-
-    // Relationships
-    attendance Attendance[] @relation("UserAttendance")
-    leaves     Leave[]      @relation("UserLeave") // User's leave requests
+  id             String       @id @default(cuid())
+  name           String
+  email          String       @unique
+  password       String       @db.VarChar(255)
+  profilePicture String?
+  role           Role         @default(USER)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  attendance     Attendance[] @relation("UserAttendance")
+  leaves         Leave[]      @relation("UserLeave")
 }
 
-// Attendance model to track attendance for users
 model Attendance {
-    id        Int        @id @default(autoincrement())
-    userId    String
-    date      DateTime
-    status    StatusEnum @default(Absent)
-    createdAt DateTime   @default(now())
+  id        Int        @id @default(autoincrement())
+  userId    String
+  date      DateTime
+  status    StatusEnum @default(Absent)
+  createdAt DateTime   @default(now())
+  user      User       @relation("UserAttendance", fields: [userId], references: [id])
 
-    user User @relation("UserAttendance", fields: [userId], references: [id])
-
-    @@unique([userId, date]) // Composite unique constraint
+  @@unique([userId, date])
 }
 
-// Leave model to track leave requests
 model Leave {
-    id          Int             @id @default(autoincrement())
-    userId      String // References the User's id field
-    startDate   DateTime // Leave start date
-    endDate     DateTime // Leave end date
-    status      LeaveStatusEnum @default(Pending) // Enum: Pending, Approved, Declined
-    createdAt   DateTime        @default(now())
-    leaveReason String? // Optional leave reason for Leave status
-    // Relationship with User
-    user        User            @relation("UserLeave", fields: [userId], references: [id])
+  id          Int             @id @default(autoincrement())
+  userId      String
+  startDate   DateTime
+  endDate     DateTime
+  status      LeaveStatusEnum @default(Pending)
+  createdAt   DateTime        @default(now())
+  leaveReason String?
+  user        User            @relation("UserLeave", fields: [userId], references: [id])
 }
 
 model Grade {
-    id            String   @id @default(cuid())
-    grade         String
-    minAttendance Int
-    createdAt     DateTime @default(now())
-    updatedAt     DateTime @updatedAt
+  id            String   @id @default(cuid())
+  grade         String
+  minAttendance Int
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
 
-// Enum to define attendance status
 enum StatusEnum {
-    Present
-    Absent
-    Leave
+  Present
+  Absent
+  Leave
 }
 
-// Enum to define leave approval statuses
 enum LeaveStatusEnum {
-    Pending
-    Approved
-    Declined
+  Pending
+  Approved
+  Declined
 }
 
-// Enum to define user roles
 enum Role {
-    USER
-    ADMIN
+  USER
+  ADMIN
 }

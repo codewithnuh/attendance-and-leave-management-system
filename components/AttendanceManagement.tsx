@@ -75,7 +75,7 @@ const AttendanceManagement = ({ ALL_USERS }: AttendanceManagementProps) => {
       });
     }
   };
-
+  console.log(ALL_USERS);
   return (
     <CardContent>
       <form className="space-y-4" onSubmit={handleSubmit}>
