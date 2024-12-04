@@ -7,12 +7,11 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "preinstall": "npm install --legacy-peer-deps"
   },
-  "overrides": {
-    "react": "19.0.0-rc-66855b96-20241106",
-    "react-dom": "19.0.0-rc-66855b96-20241106",
-    "next": "15.0.3"
+  "config": {
+    "legacy-peer-deps": true
   },
   "dependencies": {
     "@clerk/nextjs": "^6.5.1",
