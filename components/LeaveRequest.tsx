@@ -77,7 +77,7 @@ const LeaveRequest = ({ leaveRequests }: { leaveRequests: any }) => {
             {new Date(request.endDate).toLocaleDateString()}
           </TableCell>
           <TableCell>{request.leaveReason}</TableCell>
-          <TableCell>
+          <TableCell className="flex flex-col items-center gap-2 sm:flex-row justify-center">
             <Button
               variant="outline"
               size="sm"

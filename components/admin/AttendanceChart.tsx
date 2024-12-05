@@ -18,14 +18,6 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 
-const chartData = [
-  { day: "Monday", present: 25, absent: 5, leave: 2 },
-  { day: "Tuesday", present: 22, absent: 8, leave: 5 },
-  { day: "Wednesday", present: 20, absent: 10, leave: 3 },
-  { day: "Thursday", present: 27, absent: 3, leave: 4 },
-  { day: "Friday", present: 28, absent: 2, leave: 7 },
-];
-
 const chartConfig = {
   present: {
     label: "Present",
@@ -41,7 +33,20 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export function AttendanceChart() {
+interface WeeklyAttendanceData {
+  day: string;
+  totalPresent: number;
+  totalAbsent: number;
+  totalLeave: number;
+}
+
+interface AttendanceChartProps {
+  WEEKLY_ATTENDANCE_DATA: WeeklyAttendanceData[];
+}
+
+export function AttendanceChart({
+  WEEKLY_ATTENDANCE_DATA,
+}: AttendanceChartProps) {
   return (
     <Card>
       <CardHeader>
@@ -50,31 +55,31 @@ export function AttendanceChart() {
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
-          <BarChart accessibilityLayer data={chartData}>
+          <BarChart accessibilityLayer data={WEEKLY_ATTENDANCE_DATA}>
             <CartesianGrid vertical={false} />
             <XAxis
               dataKey="day"
               tickLine={false}
               tickMargin={10}
               axisLine={false}
-              tickFormatter={(value) => value.slice(0, 3)}
+              tickFormatter={(value) => value.slice(0, 3)} // Display first 3 letters of day
             />
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent indicator="dashed" />}
             />
             <Bar
-              dataKey="present"
-              fill="hsl( 263.39deg 69.96% 50.39%)"
+              dataKey="totalPresent"
+              fill="hsl(263.39deg 69.96% 50.39%)"
               radius={4}
             />
             <Bar
-              dataKey="absent"
+              dataKey="totalAbsent"
               fill="hsl(287.46deg 65.05% 40.39%)"
               radius={4}
             />
             <Bar
-              dataKey="leave"
+              dataKey="totalLeave"
               fill="hsl(328.03deg 81.33% 29.41%)"
               radius={4}
             />

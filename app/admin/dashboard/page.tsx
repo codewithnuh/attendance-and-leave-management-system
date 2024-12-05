@@ -1,8 +1,24 @@
 import { AttendanceChart } from "@/components/admin/AttendanceChart";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { getWeeklyAttendanceData } from "@/lib/actions/summary-data.action";
 import { getUserAttendanceData } from "@/lib/actions/user-details.action";
+export const dynamic = "force-dynamic";
 export default async function AdminDashboard() {
-  // const ALL_USERS_ATTENDANCE_DATA = await getUserAttendanceData();
+  const ATTENDANCE_DATA = await getUserAttendanceData();
+  const WEEKLY_ATTENDANCE_DATA = await getWeeklyAttendanceData();
+  const totalPresent = ATTENDANCE_DATA.reduce(
+    (sum, record) => sum + record.presentCount,
+    0
+  );
+  const totalAbsent = ATTENDANCE_DATA.reduce(
+    (sum, record) => sum + record.absentCount,
+    0
+  );
+  const totalLeaves = ATTENDANCE_DATA.reduce(
+    (sum, record) => sum + record.leaveCount,
+    0
+  );
+
   return (
     <div className="min-h-screen bg-background">
       <main className="container mx-auto px-4 py-8">
@@ -14,7 +30,7 @@ export default async function AdminDashboard() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">120</div>
+              <div className="text-2xl font-bold">{totalPresent}</div>
             </CardContent>
           </Card>
           <Card>
@@ -24,7 +40,7 @@ export default async function AdminDashboard() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">15</div>
+              <div className="text-2xl font-bold">{totalAbsent}</div>
             </CardContent>
           </Card>
           <Card>
@@ -34,11 +50,11 @@ export default async function AdminDashboard() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">8</div>
+              <div className="text-2xl font-bold">{totalLeaves}</div>
             </CardContent>
           </Card>
         </div>
-        <AttendanceChart />
+        <AttendanceChart WEEKLY_ATTENDANCE_DATA={WEEKLY_ATTENDANCE_DATA} />
       </main>
     </div>
   );
